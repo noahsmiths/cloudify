@@ -11,7 +11,7 @@ class Streamja {
         this._baseURL = 'https://streamja.com';
     }
 
-    uploadFile (filePath) {
+    uploadAndGetLink (filePath) {
         return new Promise((res, rej) => {
             let jar = request.jar();
             request({

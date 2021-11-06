@@ -11,7 +11,7 @@ class FileIO {
         this._uploadURL = 'https://file.io/';
     }
 
-    uploadFile (filePath) {
+    uploadAndGetLink (filePath) {
         return new Promise((res, rej) => {
             request({
                 url: this._uploadURL,
