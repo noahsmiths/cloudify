@@ -29,7 +29,7 @@ class FileIO {
                     rej({
                         errorCode: 0,
                         error: response
-                    })
+                    });
                 }
             })
             .catch((err) => {
