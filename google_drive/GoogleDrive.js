@@ -2,6 +2,8 @@ const fs = require('fs');
 const { google } = require('googleapis');
 const open = require('open');
 const express = require('express');
+const mime = require('mime-types');
+const path = require('path');
 
 /*
 Error Codes:
@@ -9,9 +11,10 @@ Error Codes:
 1: Error reading credentials.json
 2: Error getting token after OAuth login
 3: Error writing to token.json file
+4: Error uploading and sharing
 */
 
-class GoogleDriveLogin {
+class GoogleDrive {
     constructor (tokenPath, credentialsPath) {
         this._tokenPath = tokenPath;
         this._credentialsPath = credentialsPath;
@@ -37,18 +40,18 @@ class GoogleDriveLogin {
                 let authorize = (credentials, callback) => {
                     const { client_secret, client_id, redirect_uris } = credentials.installed;
 
-                    const oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[1]);
+                    this.oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[1]);
 
                     // Check if we have previously stored a token.
                     fs.readFile(this._tokenPath, (err, token) => {
-                        if (err) return getAccessToken(oAuth2Client, callback);
-                        oAuth2Client.setCredentials(JSON.parse(token));
-                        callback(oAuth2Client);
+                        if (err) return getAccessToken(callback);
+                        this.oAuth2Client.setCredentials(JSON.parse(token));
+                        callback(this.oAuth2Client);
                     });
                 }
 
-                let getAccessToken = (oAuth2Client, callback) => {
-                    const authUrl = oAuth2Client.generateAuthUrl({
+                let getAccessToken = (callback) => {
+                    const authUrl = this.oAuth2Client.generateAuthUrl({
                         access_type: 'offline',
                         scope: this._scopes,
                         //prompt: 'consent',
@@ -62,14 +65,14 @@ class GoogleDriveLogin {
                         res.send(`Logged in. Close this window.`);
                         server.close();
 
-                        oAuth2Client.getToken(req.query.code, (err, token) => {
+                        this.oAuth2Client.getToken(req.query.code, (err, token) => {
                         if (err) {
                             rej({
                                 errorCode: 2,
                                 error: err,
                             });
                         }
-                        oAuth2Client.setCredentials(token);
+                        this.oAuth2Client.setCredentials(token);
                         // Store the token to disk for later program executions
 
                         try {
@@ -81,7 +84,8 @@ class GoogleDriveLogin {
                             });
                         }
 
-                        callback(oAuth2Client);
+                        //this._auth = this.oAuth2Client;
+                        callback(this.oAuth2Client);
                         });
                     });
 
@@ -97,6 +101,61 @@ class GoogleDriveLogin {
             }
         });
     }
+
+    uploadAndGetLink (filePath) {
+        return new Promise(async (res, rej) => {
+            //console.log(this.oAuth2Client);
+            const drive = google.drive({
+                version: 'v3',
+                auth: this.oAuth2Client
+            });
+
+            try {
+                const fileMimeType = mime.lookup(filePath);
+                const fileName = path.basename(filePath);
+
+                const fileUpload = await drive.files.create({
+                    requestBody: {
+                        name: fileName,
+                        mimeType: fileMimeType,
+                    },
+                    media: {
+                        mimeType: fileMimeType,
+                        body: fs.createReadStream(filePath),
+                    }
+                });
+
+                let uploadedFileId = fileUpload.data.id;
+
+                const fileShare = await drive.permissions.create({
+                    fileId: uploadedFileId,
+                    requestBody: {
+                        type: 'anyone',
+                        role: 'reader',
+                    },
+                });
+
+                if (fileShare.status === 200) {
+                    res(`https://drive.google.com/file/d/${uploadedFileId}/view?usp=sharing`);
+                    //console.log(`https://drive.google.com/file/d/${uploadedFileId}/view?usp=sharing`);
+                } else {
+                    rej({
+                        errorCode: 4,
+                        error: fileShare,
+                    });
+                }
+
+                //console.log(fileShare);
+                //res(response);
+                //console.log(response);
+            } catch (err) {
+                rej({
+                    errorCode: 4,
+                    error: err
+                });
+            }
+        });
+    }
 }
 
-module.exports = GoogleDriveLogin;
+module.exports = GoogleDrive;

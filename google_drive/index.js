@@ -1,3 +1,5 @@
+/* THIS IS JUST FOR TESTING AND NOT NEEDED */
+
 const fs = require('fs');
 const {google} = require('googleapis');
 const open = require('open');

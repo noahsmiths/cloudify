@@ -1,6 +1,7 @@
-const GoogleDriveLogin = require("./GoogleDriveLogin");
+const GoogleDrive = require("./GoogleDrive");
 const { google } = require('googleapis');
 
+/*
 function listFiles(auth) {
     const drive = google.drive({version: 'v3', auth});
     drive.files.list({
@@ -20,11 +21,26 @@ function listFiles(auth) {
     });
 }
 
-let googleDriveLogin = new GoogleDriveLogin("token.json", "credentials.json");
+let googleDrive = new GoogleDrive("token.json", "credentials.json");
 
-googleDriveLogin.login()
+googleDrive.login()
     .then((auth) => {
         listFiles(auth);
+    })
+    .catch((e) => {
+        console.log(e);
+    });
+
+    */
+
+let googleDrive = new GoogleDrive("token.json", "credentials.json");
+
+googleDrive.login()
+    .then(() => {
+        return googleDrive.uploadAndGetLink('notes.txt');
+    })
+    .then((link) => {
+        console.log(link);
     })
     .catch((e) => {
         console.log(e);
