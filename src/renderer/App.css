@@ -2,61 +2,125 @@
  * @NOTE: Prepend a `~` to css file paths that are in your node_modules
  *        See https://github.com/webpack-contrib/sass-loader#imports
  */
-body {
-  position: relative;
+
+html{
+  width: 100%;
+  height: 100%;
+}
+
+body{
+  background-color: #020408;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+* {
+  font-family: 'Roboto';
+  color: #C9D1D9;
+  margin: 0;
+}
+
+#root{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.header{
+  background-color: #161B22;
+  padding: 10px;
+  text-align: center;
+  display: flex;
+}
+
+.body{
+  flex: 1;
   color: white;
-  height: 100vh;
-  background: linear-gradient(
-    200.96deg,
-    #fedc2a -29.09%,
-    #dd5789 51.77%,
-    #7a2c9e 129.35%
-  );
-  font-family: sans-serif;
-  overflow-y: hidden;
+  padding: 20px;
+}
+
+.card {
   display: flex;
-  justify-content: center;
+  background-color: #0D1116;
+  border-radius: 15px;
+  border: 0.5px #30363D solid;
+  margin-bottom: 20px;
+}
+
+.flex-stack {
+  flex-direction: column;
+}
+
+.no-flex-wrapper {
+  display: flex;
+  flex: 0;
+}
+
+.flex-wrapper {
+  display: flex;
+  flex: 1;
+}
+
+.card-img-wrapper {
+  padding: 10px;
+  background-color: #161B22;
+  border-radius: 15px 0px 0px 15px;
+  border-right: #30363D solid 0.5px;
   align-items: center;
 }
 
-button {
-  background-color: white;
-  padding: 10px 20px;
-  border-radius: 10px;
-  border: none;
-  appearance: none;
-  font-size: 1.3rem;
-  box-shadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12),
-    0px 18px 88px -4px rgba(24, 39, 75, 0.14);
-  transition: all ease-in 0.1s;
-  cursor: pointer;
-  opacity: 0.9;
+.card-content-wrapper {
+  padding: 10px;
 }
 
-button:hover {
-  transform: scale(1.05);
-  opacity: 1;
+.h2 {
+  font-size: 15px;
+  font-weight: bold;
+  margin-bottom: 5px !important;
 }
 
-li {
-  list-style: none;
+.p {
+  font-size: 10px;
+  margin-bottom: 10px !important;
 }
 
-a {
-  text-decoration: none;
-  height: fit-content;
-  width: fit-content;
-  margin: 10px;
+.button {
+  padding: 5px;
+  border-radius: 5px;
 }
 
-a:hover {
-  opacity: 1;
-  text-decoration: none;
+.submit {
+  box-shadow: inset 0 0 10px #3E924C;
+  font-weight: bold;
+  background-color: #238636;
+  border: 1px #3E924C solid;
 }
 
-.Hello {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px 0;
+.cancel {
+  box-shadow: inset 0 0 10px #9D9D9D;
+  font-weight: bold;
+  background-color: #21262D;
+  border: 1px #373B43 solid;
+  color: #F85249;
+}
+
+.error-box {
+  background-color: #A23838;
+  padding: 10px;
+  border: 1px red solid;
+}
+
+.error-box p {
+  color: #FFF;
+  font-weight: bold;
+  opacity: 0.8;
+}
+
+/* Modifiers */
+
+.--full-width {
+  width: 100%;
 }
