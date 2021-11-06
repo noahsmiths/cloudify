@@ -60,33 +60,34 @@ class GoogleDrive {
                     let app = express();
                     let server;
 
-                    app.get('/', (req, res) => {
+                    app.get('/', (request, response) => {
                         //console.log(req.query);
-                        res.send(`Logged in. Close this window.`);
-                        server.close();
+                        response.send(`Logged in. Close this window.`);
 
-                        this.oAuth2Client.getToken(req.query.code, (err, token) => {
-                        if (err) {
-                            rej({
-                                errorCode: 2,
-                                error: err,
-                            });
-                        }
-                        this.oAuth2Client.setCredentials(token);
-                        // Store the token to disk for later program executions
+                        this.oAuth2Client.getToken(request.query.code, (err, token) => {
+                            if (err) {
+                                rej({
+                                    errorCode: 2,
+                                    error: err,
+                                });
+                            }
+                            this.oAuth2Client.setCredentials(token);
+                            // Store the token to disk for later program executions
 
-                        try {
-                            fs.writeFileSync(this._tokenPath, JSON.stringify(token));
-                        } catch (writeErr) {
-                            rej({
-                                errorCode: 3,
-                                error: writeErr,
-                            });
-                        }
+                            try {
+                                fs.writeFileSync(this._tokenPath, JSON.stringify(token));
+                            } catch (writeErr) {
+                                rej({
+                                    errorCode: 3,
+                                    error: writeErr,
+                                });
+                            }
 
-                        //this._auth = this.oAuth2Client;
-                        callback(this.oAuth2Client);
+                            //this._auth = this.oAuth2Client;
+                            callback(this.oAuth2Client);
                         });
+
+                        server.close();
                     });
 
                     server = app.listen(this._port);
