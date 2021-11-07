@@ -1,6 +1,5 @@
 import '../App.css';
 
-const Card = (props: any) => {
   return (
       <div className="card">
         <div className="no-flex-wrapper card-img-wrapper">
@@ -14,13 +13,7 @@ const Card = (props: any) => {
             <p className="p">{props.serviceDescription}</p>
           </div>
           <div className="flex-wrapper">
-            {(function() {
-              if (props.status == "connected") {
-                return (<button className="cancel button --full-width">- Disconnect</button>)
-              } else {
-                return (<button className="submit button --full-width">+ Connect</button>)
-              }
-            })()}
+            {props.isConnected ? <button className="cancel button --full-width">- Disconnect</button> : <button className="submit button --full-width" onClick={connectService}>+ Connect</button>}
           </div>
         </div>
       </div>
