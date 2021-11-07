@@ -1,0 +1,277 @@
+/*
+ * @NOTE: Prepend a `~` to css file paths that are in your node_modules
+ *        See https://github.com/webpack-contrib/sass-loader#imports
+ */
+
+html{
+  width: 100%;
+  height: 100%;
+}
+
+body{
+  background-color: #020408;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+* {
+  font-family: Helvetica;
+  color: #C9D1D9;
+  margin: 0;
+}
+
+#root{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.header{
+  background-color: #161B22;
+  padding: 10px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px #30363D solid;
+}
+
+.body{
+  flex: 1;
+  color: white;
+  padding: 20px;
+}
+
+.footer {
+  background-color: #161B22;
+  padding: 10px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top: 1px #30363D solid;
+}
+
+.card {
+  display: flex;
+  background-color: #0D1116;
+  border-radius: 15px;
+  border: 0.5px #30363D solid;
+  margin-bottom: 20px;
+}
+
+.flex-stack {
+  flex-direction: column;
+}
+
+.flex-container {
+  display: flex;
+}
+
+.no-flex-wrapper {
+  display: flex;
+  flex: 0;
+}
+
+.flex-wrapper {
+  display: flex;
+  flex: 1;
+}
+
+.card-img-wrapper {
+  padding: 10px;
+  background-color: #161B22;
+  border-radius: 15px 0px 0px 15px;
+  border-right: #30363D solid 0.5px;
+  align-items: center;
+}
+
+.card-content-wrapper {
+  padding: 10px;
+}
+
+.text-container {
+  padding: 0px 5px 0px 5px;
+  justify-content: center;
+  vertical-align: middle;
+  line-height: 67px;
+}
+
+.h1 {
+  font-size: 26px;
+}
+
+.h2 {
+  font-size: 15px;
+  font-weight: bold;
+  margin-bottom: 5px !important;
+}
+
+.h3 {
+  font-size: 15px;
+  font-weight: normal;
+}
+
+.p {
+  font-size: 10px;
+  margin-bottom: 10px !important;
+}
+
+.button {
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.button:hover {
+  cursor: pointer;
+}
+
+.submit {
+  box-shadow: inset 0 0 10px #3E924C;
+  font-weight: bold;
+  background-color: #238636;
+  border: 1px #3E924C solid;
+}
+
+.submit:hover {
+  opacity: 0.8;
+  border: 1px rgba(0,255,0,1) solid;
+  color: rgba(255,255,255,1);
+}
+
+.cancel {
+  box-shadow: inset 0 0 5px #9D9D9D;
+  font-weight: bold;
+  background-color: #21262D;
+  border: 1px #373B43 solid;
+  color: #F85249;
+}
+
+.cancel:hover {
+  opacity: 0.8;
+  border: 1px rgba(255,0,0,1) solid;
+  color: rgba(255,0,0,1);
+}
+
+.neutral {
+  background-color: #1F6EEB;
+  box-shadow: inset 0 0 10px #459BFF;
+  border: 1px #1F6EEB solid;
+}
+
+.loading {
+  box-shadow: inset 0 0 10px #3E924C;
+  font-weight: bold;
+  background-color: rgba(0,130,0,0.2);
+  border: 1px rgba(0,255,0,1) solid;
+  color: rgba(255,255,255,1);
+}
+
+.error-box {
+  background-color: #A23838;
+  padding: 10px;
+  border: 1px red solid;
+}
+
+.error-box p {
+  color: #FFF;
+  font-weight: bold;
+  opacity: 0.8;
+}
+
+.select {
+  width: 100%;
+  padding: 5px;
+  background-color: #21262d;
+  border-radius: 5px;
+  border: 1px #30343b solid;
+  font-size: 28px;
+  color: #FFF;
+  outline: 0;
+}
+
+.select:focus, .input:focus {
+  outline: 0;
+  border: 1px #42a5f5 solid;
+}
+
+.loading-bar {
+  width: 100%;
+  background-color: #21262d;
+  border-radius: 5px;
+  box-shadow: inset 0 0 5px #9D9D9D;
+  height: 100%;
+}
+
+.progress-bar {
+  width: 63%;
+  text-align: center;
+  background-color: #238636;
+  border-radius: 5px;
+  height: 100%;
+}
+
+.input {
+  padding: 10px;
+  width: 100%;
+  background-color: #21262d;
+  border-radius: 5px;
+  border: 1px #30343b solid;
+}
+
+.logo {
+  max-width: 75px;
+}
+
+.service-logo {
+  max-width: 50px;
+}
+
+/* Modifiers */
+
+.--full-width {
+  width: 100%;
+}
+
+.--full-height {
+  height: 100%;
+}
+
+.--white {
+  color: #FFF !important;
+}
+
+.--bold {
+  font-weight: bold;
+}
+
+.--center-text {
+  text-align: center;
+}
+
+.--space-below {
+  margin-bottom: 20px !important;
+}
+
+.--big-button {
+  padding: 10px;
+}
+
+.--flex {
+  flex: 1;
+}
+
+.--gap {
+  grid-gap: 20px;
+}
+
+.--center-items {
+  justify-content: center;
+}
+
+.--small-gap {
+  grid-gap: 10px;
+}
