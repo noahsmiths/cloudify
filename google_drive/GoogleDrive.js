@@ -105,13 +105,12 @@ class GoogleDrive {
 
     uploadAndGetLink (filePath) {
         return new Promise(async (res, rej) => {
-            //console.log(this.oAuth2Client);
-            const drive = google.drive({
-                version: 'v3',
-                auth: this.oAuth2Client
-            });
-
             try {
+                const drive = google.drive({
+                    version: 'v3',
+                    auth: this.oAuth2Client
+                });
+
                 const fileMimeType = mime.lookup(filePath);
                 const fileName = path.basename(filePath);
 

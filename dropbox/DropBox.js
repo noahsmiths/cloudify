@@ -2,7 +2,7 @@ const request = require('request-promise-native');
 const express = require('express');
 const fs = require('fs');
 const open = require('open');
-const oneDriveAPI = require('onedrive-api');
+const dropboxV2Api = require('dropbox-v2-api');
 const path = require('path');
 
 /*
@@ -12,13 +12,12 @@ const path = require('path');
 3: Error sharing
 */
 
-class OneDrive {
+class DropBox {
     constructor (tokenPath, credentialsPath) {
         this._tokenPath = tokenPath;
         this._credentials = JSON.parse(fs.readFileSync(credentialsPath));
 
         this._port = 8080;
-        this._scopes = 'files.readwrite offline_access';
     }
 
     login () {
@@ -28,24 +27,26 @@ class OneDrive {
                     let tokens = JSON.parse(fs.readFileSync(this._tokenPath));
 
                     let newTokenRequest = await request({
-                        url: 'https://login.microsoftonline.com/common/oauth2/v2.0/token',
+                        url: 'https://api.dropbox.com/oauth2/token',
                         method: 'POST',
                         form: {
                             client_id: this._credentials.client_id,
-                            redirect_uri: this._credentials.redirect_uri,
-                            //client_secret: this._credentials.client_secret,
-                            //code: request.query.code,
+                            client_secret: this._credentials.client_secret,
                             grant_type: 'refresh_token',
-                            refresh_token: tokens.refresh_token
+                            refresh_token: tokens.refresh_token,
                         }
                     });
 
                     let newTokens = JSON.parse(newTokenRequest);
 
-                    this.access_token = newTokens.access_token;
-                    res(newTokens.access_token);
+                    tokens.access_token = newTokens.access_token;
+                    tokens.token_type = newTokens.token_type;
+                    tokens.expires_in = newTokens.expires_in;
 
-                    fs.writeFileSync(this._tokenPath, newTokenRequest);
+                    this.access_token = tokens.access_token;
+                    res(tokens.access_token);
+
+                    fs.writeFileSync(this._tokenPath, JSON.stringify(tokens));
                 } else {
                     let app = express();
                     let server;
@@ -54,16 +55,15 @@ class OneDrive {
                         response.send(`Logged in. Close this window.`);
 
                         if (req.query.code) {
-                            //console.log(request.query.code);
                             let tokenRequest = await request({
-                                url: 'https://login.microsoftonline.com/common/oauth2/v2.0/token',
+                                url: 'https://api.dropboxapi.com/oauth2/token',
                                 method: 'POST',
                                 form: {
                                     client_id: this._credentials.client_id,
                                     redirect_uri: this._credentials.redirect_uri,
-                                    //client_secret: this._credentials.client_secret,
+                                    client_secret: this._credentials.client_secret,
                                     code: req.query.code,
-                                    grant_type: 'authorization_code'
+                                    grant_type: 'authorization_code',
                                 }
                             });
 
@@ -87,7 +87,7 @@ class OneDrive {
 
                     server = app.listen(this._port);
 
-                    open(`https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=${this._credentials.client_id}&scope=${encodeURIComponent(this._scopes)}&response_type=code&redirect_uri=${this._credentials.redirect_uri}`);
+                    open(`https://www.dropbox.com/oauth2/authorize?client_id=${this._credentials.client_id}&token_access_type=offline&response_type=code&redirect_uri=${this._credentials.redirect_uri}`);
                 }
 
                 //this._access_token = access_token;
@@ -107,55 +107,59 @@ class OneDrive {
         });
     }
 
-    uploadAndGetLink (filePath, callback) {
+    uploadAndGetLink (filePath) {
         return new Promise(async (res, rej) => {
-            let fileSize = fs.statSync(filePath).size;
+            try {
+                const dropbox = dropboxV2Api.authenticate({
+                    token: this.access_token
+                });
 
-            //console.log(this.access_token);
-
-            oneDriveAPI.items.uploadSession({
-                accessToken: this.access_token,
-                filename: path.basename(filePath),
-                fileSize: fileSize,
-                readableStream: fs.createReadStream(filePath)
-            }, (progress) => {
-                if (callback) {
-                    callback(progress / fileSize);
-                }
-            })
-            .then((item) => {
-                //console.log(item);
-                return request({
-                    url: `https://graph.microsoft.com/v1.0/me/drive/items/${item.id}/createLink`,
-                    method: 'POST',
-                    json: true,
-                    headers: {
-                        'Authorization': `bearer ${this.access_token}`
+                //Upload File
+                dropbox({
+                    resource: 'files/upload',
+                    parameters: {
+                        path: `/${path.basename(filePath)}`
                     },
-                    body: {
-                        'type': 'view',
-                        'scope': 'anonymous',
+                    readStream: fs.createReadStream(filePath)
+                }, (err, result, response) => {
+                    if (err) {
+                        rej({
+                            errorCode: 2,
+                            error: err
+                        });
                     }
+
+                    //Share File
+                    dropbox({
+                        resource: 'sharing/create_shared_link_with_settings',
+                        parameters: {
+                            path: result.path_display,
+                            settings: {
+                                audience: 'public',
+                                access: 'viewer',
+                                allow_download: true,
+                            }
+                        }
+                    }, (err, result, response) => {
+                        if (err) {
+                            rej({
+                                errorCode: 3,
+                                error: err
+                            });
+                        }
+                        res(result.url);
+                    });
+                    //console.log(result);
+                    //console.log(response);
                 });
-            })
-            .then((share) => {
-                if (share.link.webUrl) {
-                    res(share.link.webUrl);
-                } else {
-                    rej({
-                        errorCode: 3,
-                        error: share
-                    })
-                }
-            })
-            .catch((err) => {
+            } catch (e) {
                 rej({
-                    errorCode: 2,
-                    error: err
+                    errorCode: 0,
+                    error: e
                 });
-            });
+            }
         });
     }
 }
 
-module.exports = OneDrive;
+module.exports = DropBox;
