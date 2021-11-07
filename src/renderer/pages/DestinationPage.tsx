@@ -1,9 +1,10 @@
 import '../App.css';
+import logo from '../../../assets/logos/300x100.png';
 
 const DestinationPage = () => {
   return (<>
     <div className="header">
-      <img src="/assets/logos/300x100.png"></img>
+      <img src={logo}></img>
     </div>
     <div className="body">
       <div className="flex-container --full-width --space-below">

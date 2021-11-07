@@ -1,11 +1,11 @@
 import '../App.css';
 import Card from '../components/Card'
-
+import logo from '../../../assets/logos/300x100.png';
 
 const ConnectionPage = () => {
   return (<>
   <div className="header">
-    <img src="/assets/logos/300x100.png"></img>
+    <img src={logo}></img>
   </div>
   <div className="body">
     <Card serviceName="Google Drive"

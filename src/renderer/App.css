@@ -34,6 +34,8 @@ body{
   padding: 10px;
   text-align: center;
   display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .body{
@@ -119,6 +121,12 @@ body{
   color: #F85249;
 }
 
+.neutral {
+  background-color: #1F6EEB;
+  box-shadow: inset 0 0 10px #459BFF;
+  border: 1px #1F6EEB solid;
+}
+
 .error-box {
   background-color: #A23838;
   padding: 10px;
@@ -139,6 +147,33 @@ body{
   border: 1px #30343b solid;
 }
 
+.loading-bar {
+  width: 100%;
+  background-color: #21262d;
+  border-radius: 5px;
+  box-shadow: inset 0 0 5px #9D9D9D;
+}
+
+.progress-bar {
+  width: 63%;
+  text-align: center;
+  padding: 10px;
+  background-color: #238636;
+  border-radius: 5px;
+}
+
+.input {
+  padding: 10px;
+  width: 100%;
+  background-color: #21262d;
+  border-radius: 5px;
+  border: 1px #30343b solid;
+}
+
+.logo {
+  max-width: 75px;
+}
+
 /* Modifiers */
 
 .--full-width {
@@ -147,6 +182,10 @@ body{
 
 .--white {
   color: #FFF !important;
+}
+
+.--bold {
+  font-weight: bold;
 }
 
 .--center-text {
@@ -158,7 +197,7 @@ body{
 }
 
 .--big-button {
-  height: 38px;
+  padding: 10px;
 }
 
 .--flex {
@@ -167,4 +206,12 @@ body{
 
 .--gap {
   grid-gap: 20px;
+}
+
+.--center-items {
+  justify-content: center;
+}
+
+.--small-gap {
+  grid-gap: 10px;
 }
