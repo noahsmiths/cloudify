@@ -13,13 +13,13 @@ const SharePage = () => {
       <div className="flex-wrapper --space-below --center-items">
         <p className="h2 --center-text">File has successfully uploaded.</p>
       </div>
-      <div className="flex-wrapper --small-gap">
-        <div className="flex-wrapper">
-          <input className="input --full-width" value="Link"></input>
-        </div>
-        <div>
-          <button className="neutral button --big-button">Copy Link</button>
-        </div>
+    </div>
+    <div className="footer">
+      <div className="flex-wrapper">
+        <input className="input --full-width" value="Link"></input>
+      </div>
+      <div>
+        <button className="neutral button --big-button">Copy Link</button>
       </div>
     </div>
   </>)
