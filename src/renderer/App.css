@@ -54,6 +54,10 @@ body{
   flex-direction: column;
 }
 
+.flex-container {
+  display: flex;
+}
+
 .no-flex-wrapper {
   display: flex;
   flex: 0;
@@ -74,6 +78,14 @@ body{
 
 .card-content-wrapper {
   padding: 10px;
+}
+
+.text-container {
+  padding: 0px 5px 0px 5px;
+}
+
+.h1 {
+  font-size: 26px;
 }
 
 .h2 {
@@ -100,7 +112,7 @@ body{
 }
 
 .cancel {
-  box-shadow: inset 0 0 10px #9D9D9D;
+  box-shadow: inset 0 0 5px #9D9D9D;
   font-weight: bold;
   background-color: #21262D;
   border: 1px #373B43 solid;
@@ -119,8 +131,40 @@ body{
   opacity: 0.8;
 }
 
+.select {
+  width: 100%;
+  padding-left: 5px;
+  background-color: #21262d;
+  border-radius: 5px;
+  border: 1px #30343b solid;
+}
+
 /* Modifiers */
 
 .--full-width {
   width: 100%;
+}
+
+.--white {
+  color: #FFF !important;
+}
+
+.--center-text {
+  text-align: center;
+}
+
+.--space-below {
+  margin-bottom: 20px;
+}
+
+.--big-button {
+  height: 38px;
+}
+
+.--flex {
+  flex: 1;
+}
+
+.--gap {
+  grid-gap: 20px;
 }
