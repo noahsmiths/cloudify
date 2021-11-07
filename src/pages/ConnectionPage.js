@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 import '../App.css';
 import Card from '../components/Card'
 import Credit from '../components/Credit.js'
@@ -11,10 +12,17 @@ import sj from '../assets/service_logos/streamja.png';
 
 const ConnectionPage = () => {
   const [services, setServices] = useState(localStorage.getItem('services') ? JSON.parse(localStorage.getItem('services')) : { googleDrive: false, oneDrive: false, dropBox: false });
+  const navigate = useNavigate();
 
   useEffect(() => {
     localStorage.setItem('services', JSON.stringify(services));
   }, [services]);
+
+  useEffect(() => {
+    if (global.process.argv.indexOf('file-passed') !== -1) {
+      navigate('destination');
+    }
+  }, []);
   /*
   connectedServices.googleDrive
   connectedServices.oneDrive

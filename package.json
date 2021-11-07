@@ -29,7 +29,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "concurrently -k \"cross-env BROWSER=none npm start\" \"npm:electron\"",
+    "dev": "concurrently -k \"cross-env BROWSER=none npm start\" \"npm:electron C:\\Users\\4noah\\Downloads\\Archive\\onedrive\\notes.txt\"",
     "electron": "npx wait-on tcp:3000 && electron ."
   },
   "eslintConfig": {

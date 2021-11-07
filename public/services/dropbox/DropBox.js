@@ -20,7 +20,7 @@ class DropBox {
                 let token = localStorage.getItem('dropbox_token');
                 if (token) {
                     //let tokens = JSON.parse(fs.readFileSync(this._tokenPath));
-                    tokens = JSON.parse(token);
+                    let tokens = JSON.parse(token);
 
                     let newTokenRequest = await request({
                         url: 'https://api.dropbox.com/oauth2/token',

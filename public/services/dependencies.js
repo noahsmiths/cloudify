@@ -7,3 +7,5 @@ const path = require('path');
 const oneDriveAPI = require('onedrive-api');
 const request = require('request-promise-native');
 const dropboxV2Api = require('dropbox-v2-api');
+window.ipcRenderer = require('electron').ipcRenderer;
+window.ElectronClipboard = require('electron').clipboard;

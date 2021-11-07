@@ -1,20 +1,39 @@
 const path = require('path');
 
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const isDev = require('electron-is-dev');
+
+//console.log(process.argv);
+let win;
 
 function createWindow() {
   // Create the browser window.
-  const win = new BrowserWindow({
-    width: 500,
-    //height: 250,
-    height: 675,
-    webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false
-    },
-    autoHideMenuBar: true
-  });
+  if ((isDev && process.argv.length > 2) || (!isDev && process.argv.length > 1)) { //Launched with file argument
+    let additionalArgs = ["file-passed"];
+    isDev ? additionalArgs.push(path.normalize(process.argv[2])) : additionalArgs.push(path.normalize(process.argv[1]));
+    win = new BrowserWindow({
+      width: 500,
+      //height: 250,
+      height: 250,
+      webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false,
+        additionalArguments: additionalArgs
+      },
+      autoHideMenuBar: true
+    });
+  } else { //Launched normally
+    win = new BrowserWindow({
+      width: 500,
+      //height: 250,
+      height: 700,
+      webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false
+      },
+      autoHideMenuBar: true
+    });
+  }
 
   // and load the index.html of the app.
   // win.loadFile("index.html");
@@ -28,6 +47,10 @@ function createWindow() {
     win.webContents.openDevTools({ mode: 'detach' });
   }
 }
+
+ipcMain.on('close', () => {
+  app.quit();
+});
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
