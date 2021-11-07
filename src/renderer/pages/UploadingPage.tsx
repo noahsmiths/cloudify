@@ -5,7 +5,7 @@ import logo from '../../../assets/logos/300x100.png';
 const UploadingPage = () => {
   return (<>
     <div className="header">
-      <img src={logo}></img>
+      <img className="logo" src={logo}></img>
     </div>
     <div className="body">
       <div className="flex-container --full-width --space-below">

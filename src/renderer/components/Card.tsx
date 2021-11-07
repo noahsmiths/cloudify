@@ -4,7 +4,7 @@ const Card = (props: any) => {
   return (
       <div className="card">
         <div className="no-flex-wrapper card-img-wrapper">
-          <img src={props.serviceLogo}></img>
+          <img className="service-logo" src={props.serviceLogo}></img>
         </div>
         <div className="flex-wrapper flex-stack card-content-wrapper">
           <div className="flex-wrapper">
