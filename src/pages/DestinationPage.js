@@ -20,12 +20,36 @@ const DestinationPage = (props) => {
 
     switch (serviceRef.current.value) {
       case "GD":
+        /*
         try {
           let googleDrive = new window.GoogleDrive('blank', window.googleDriveCredentials);
           await googleDrive.login();
           let link = await googleDrive.uploadAndGetLink(file);
           props.setSharedState(link);
           navigate('../share');
+          //setConnection(true);
+        } catch (err) {
+          console.log(err);
+          props.setSharedState(err);
+          navigate('../error');
+        }
+        break;
+        */
+        try {
+          let googleDrive = new window.GoogleDrive('blank', window.googleDriveCredentials);
+          await googleDrive.login();
+          let tokens = JSON.parse(localStorage.getItem('google_drive_token'));
+          let credentials = window.googleDriveCredentials;
+          let data = {
+            tokens: tokens,
+            credentials: credentials,
+            file: file
+          }
+          window.ipcRenderer.send('upload-google', data);
+          window.ipcRenderer.on('uploaded-google', (event, link) => {
+            props.setSharedState(link);
+            navigate('../share');
+          })
           //setConnection(true);
         } catch (err) {
           console.log(err);

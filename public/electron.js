@@ -2,6 +2,7 @@ const path = require('path');
 
 const { app, BrowserWindow, ipcMain } = require('electron');
 const isDev = require('electron-is-dev');
+const GoogleDriveUploader = require('./services/google_drive/GoogleDriveUploader');
 
 //console.log(process.argv);
 let win;
@@ -50,6 +51,17 @@ function createWindow() {
 
 ipcMain.on('close', () => {
   app.quit();
+});
+
+ipcMain.on('upload-google', async (event, data) => {
+  try {
+    googleDriveUploader = new GoogleDriveUploader(data.tokens, data.credentials)
+    await googleDriveUploader.login();
+    let link = await googleDriveUploader.uploadAndGetLink(data.file);
+    event.reply('uploaded-google', link);
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 // This method will be called when Electron has finished
