@@ -9,6 +9,7 @@
     "concurrently": "^6.3.0",
     "cross-env": "^7.0.3",
     "dropbox-v2-api": "^2.4.52",
+    "electron-is-dev": "^2.0.0",
     "electron-squirrel-startup": "^1.0.0",
     "express": "^4.17.1",
     "googleapis": "^39.2.0",
@@ -60,8 +61,7 @@
     "@electron-forge/maker-rpm": "^6.0.0-beta.61",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.61",
     "@electron-forge/maker-zip": "^6.0.0-beta.61",
-    "electron": "^15.3.0",
-    "electron-is-dev": "^2.0.0"
+    "electron": "^15.3.0"
   },
   "config": {
     "forge": {

@@ -55,7 +55,7 @@ ipcMain.on('close', () => {
 
 ipcMain.on('upload-google', async (event, data) => {
   try {
-    googleDriveUploader = new GoogleDriveUploader(data.tokens, data.credentials)
+    let googleDriveUploader = new GoogleDriveUploader(data.tokens, data.credentials)
     await googleDriveUploader.login();
     let link = await googleDriveUploader.uploadAndGetLink(data.file);
     event.reply('uploaded-google', link);
