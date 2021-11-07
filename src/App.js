@@ -8,7 +8,7 @@ import SharePage from './pages/SharePage'
 export default function App() {
   return (
     <Router>
-          <SharePage></SharePage>
+          <ConnectionPage></ConnectionPage>
     </Router>
   );
 }

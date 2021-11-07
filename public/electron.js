@@ -7,10 +7,13 @@ function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
     width: 500,
-    height: 250,
+    //height: 250,
+    height: 675,
     webPreferences: {
       nodeIntegration: true,
+      contextIsolation: false
     },
+    autoHideMenuBar: true
   });
 
   // and load the index.html of the app.

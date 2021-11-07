@@ -1,4 +1,4 @@
-import { useState} from 'react';
+import { useEffect, useState } from 'react';
 import '../App.css';
 import Card from '../components/Card'
 import Credit from '../components/Credit.js'
@@ -10,8 +10,11 @@ import fi from '../assets/service_logos/fileio.png';
 import sj from '../assets/service_logos/streamja.png';
 
 const ConnectionPage = () => {
-  const [services, setServices] = useState(localStorage.getItem('services') ? localStorage.getItem('services') : { googleDrive: false, oneDrive: false, dropBox: false });
-  //height: 500, width: 800
+  const [services, setServices] = useState(localStorage.getItem('services') ? JSON.parse(localStorage.getItem('services')) : { googleDrive: false, oneDrive: false, dropBox: false });
+
+  useEffect(() => {
+    localStorage.setItem('services', JSON.stringify(services));
+  }, [services]);
   /*
   connectedServices.googleDrive
   connectedServices.oneDrive
@@ -24,22 +27,35 @@ const ConnectionPage = () => {
   </div>
   <div className="body">
       <Card serviceName="Google Drive"
-          serviceLogo={gd}
-          serviceDescription="Accepts all file types."
-          isConnected={services?.googleDrive}
-          setServiceRef={setServices}>
-          </Card>
+            serviceLogo={gd}
+            serviceDescription="Accepts all file types."
+            isConnected={services?.googleDrive}
+            setServicesRef={setServices}
+            servicesRef={services}>
+      </Card>
       <Card serviceName="OneDrive"
-          serviceLogo={od}
-          serviceDescription="Accepts all file types."
-          isConnected={services?.oneDrive}
-          setServiceRef={setServices}>
+            serviceLogo={od}
+            serviceDescription="Accepts all file types."
+            isConnected={services?.oneDrive}
+            setServicesRef={setServices}
+            servicesRef={services}>
       </Card>
       <Card serviceName="DropBox"
-          serviceLogo={db}
-          serviceDescription="Accepts all file types."
-          isConnected={services?.dropBox}
-          setServiceRef={setServices}>
+            serviceLogo={db}
+            serviceDescription="Accepts all file types."
+            isConnected={services?.dropBox}
+            setServicesRef={setServices}
+            servicesRef={services}>
+      </Card>
+      <Card serviceName="File.io"
+            serviceLogo={fi}
+            serviceDescription="Accepts all file types."
+            isConnected={true}>
+      </Card>
+      <Card serviceName="StreamJa"
+            serviceLogo={sj}
+            serviceDescription="Accepts video file types."
+            isConnected={true}>
       </Card>
       <Credit></Credit>
   </div>
